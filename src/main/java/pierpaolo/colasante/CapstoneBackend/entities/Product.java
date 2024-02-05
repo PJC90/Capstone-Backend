@@ -35,4 +35,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order productOrder;
+    private String photo1;
+    private String photo2;
+    private String photo3;
 }

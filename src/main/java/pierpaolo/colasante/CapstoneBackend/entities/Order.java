@@ -19,4 +19,6 @@ public class Order {
     private OrderType orderTypeStatus;
     @OneToMany(mappedBy = "productOrder")
     private List<Product> productListOrder;
+    @OneToOne(mappedBy = "order")
+    private Payment payment;
 }

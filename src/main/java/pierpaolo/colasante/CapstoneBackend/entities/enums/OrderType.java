@@ -1,5 +1,5 @@
 package pierpaolo.colasante.CapstoneBackend.entities.enums;
 
 public enum OrderType {
-    UNPAID, PAID
+    DELIVERED, NOT_DELIVERED
 }
