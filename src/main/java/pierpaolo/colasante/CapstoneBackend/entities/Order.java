@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import pierpaolo.colasante.CapstoneBackend.entities.enums.OrderType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class Order {
     private UUID orderId;
     @Enumerated(EnumType.STRING)
     private OrderType orderTypeStatus;
+    private LocalDateTime orderDate;
     @OneToMany(mappedBy = "productOrder")
     private List<Product> productListOrder;
     @OneToOne(mappedBy = "order")
