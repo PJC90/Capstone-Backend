@@ -21,5 +21,5 @@ public class Review {
     private Product productReview;
     @ManyToOne
     @JoinColumn(name = "user_buyer_id")
-    private Buyer buyerReview;
+    private User buyerReview;
 }

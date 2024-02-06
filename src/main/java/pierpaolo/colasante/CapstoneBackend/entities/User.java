@@ -1,5 +1,6 @@
 package pierpaolo.colasante.CapstoneBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@JsonIgnoreProperties({ "authorities", "accountNonExpired", "enabled", "accountNonLocked", "credentialsNonExpired", "reviewBuyerList", "shopList"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue
@@ -30,7 +31,14 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Roles role;
+    @OneToMany(mappedBy = "seller")
+    private List<Shop> shopList;
+    @OneToMany(mappedBy = "buyerReview")
+    private List<Review> reviewBuyerList;
 
+    public void becomeSeller(){
+        this.role = Roles.SELLER;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));

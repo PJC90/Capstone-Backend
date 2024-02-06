@@ -20,7 +20,7 @@ public class Shop {
     private int numberOfSales;
     @ManyToOne
     @JoinColumn(name = "user_seller_id")
-    private Seller seller;
+    private User seller;
     @OneToMany(mappedBy = "shop")
     private List<Product> productList;
     @OneToMany(mappedBy = "shopReview")
