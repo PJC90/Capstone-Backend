@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pierpaolo.colasante.CapstoneBackend.entities.Order;
-import pierpaolo.colasante.CapstoneBackend.entities.Review;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
 import pierpaolo.colasante.CapstoneBackend.repositories.OrderDAO;
 
