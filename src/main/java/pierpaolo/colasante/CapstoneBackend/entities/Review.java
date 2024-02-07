@@ -11,7 +11,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewId;
-    private int rating; //@Min(1) e @Max(5), Validation nel DTO
+    private int rating;
     private String description;
     @ManyToOne
     @JoinColumn(name = "shop_id")
@@ -22,4 +22,7 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_buyer_id")
     private User buyerReview;
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order orderReview;
 }

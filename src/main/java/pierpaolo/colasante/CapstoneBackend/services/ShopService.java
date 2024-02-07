@@ -28,11 +28,7 @@ public class ShopService {
     public Shop findById(int shopId){
         return shopDAO.findById(shopId).orElseThrow(()->new NotFoundException(shopId));
     }
-    public void deleteShop(int shopId){
-        Shop delete = this.findById(shopId);
-        shopDAO.delete(delete);
-        System.out.println("Shop eliminato");
-    }
+
     public Shop saveShop(User user, ShopDTO body){
         UUID userId = user.getUserId();
         Shop newShop = new Shop();

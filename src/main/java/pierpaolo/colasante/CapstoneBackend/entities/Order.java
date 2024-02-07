@@ -23,4 +23,6 @@ public class Order {
     private List<Product> productListOrder;
     @OneToOne(mappedBy = "order")
     private Payment payment;
+    @OneToOne(mappedBy = "orderReview")
+    private Review review;
 }
