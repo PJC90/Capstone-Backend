@@ -7,7 +7,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pierpaolo.colasante.CapstoneBackend.entities.Shop;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ShopDTO;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ShopResponseDTO;
 import pierpaolo.colasante.CapstoneBackend.services.UserService;
 
 import java.io.IOException;
@@ -30,6 +33,10 @@ public class UserController {
     @PreAuthorize("hasAuthority('SELLER')")
     public List<User> getSeller(){
         return userService.getSeller();
+    }
+    @PutMapping("/seller")
+    public User becomeSeller(@AuthenticationPrincipal User user){
+        return userService.becomeSeller(user.getUserId());
     }
     @GetMapping("/me")
     public User profilePage(@AuthenticationPrincipal User user) {return user;}

@@ -43,4 +43,9 @@ public class ExceptionsHandler {
         ex.printStackTrace();
         return new ErrorDTO("Problema lato server...", LocalDateTime.now());
     }
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)  // 403 Forbidden
+    public ErrorDTO handleForbidden(IllegalStateException ex){
+        return new ErrorDTO(ex.getMessage(), LocalDateTime.now());
+    }
 }

@@ -59,4 +59,9 @@ public class UserService {
     public List<User> getSeller(){
         return userDAO.findByRole(Roles.SELLER);
     }
+    public User becomeSeller(UUID userId){
+        User seller = findById(userId);
+        seller.setRole(Roles.SELLER);
+        return userDAO.save(seller);
+    }
 }
