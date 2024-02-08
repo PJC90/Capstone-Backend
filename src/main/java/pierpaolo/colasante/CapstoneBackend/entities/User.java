@@ -35,6 +35,8 @@ public class User implements UserDetails {
     private List<Shop> shopList;
     @OneToMany(mappedBy = "buyerReview")
     private List<Review> reviewBuyerList;
+    @OneToMany(mappedBy = "userId")
+    private List<Order> orderList;
 
     public void becomeSeller(){
         this.role = Roles.SELLER;

@@ -11,6 +11,7 @@ import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ReviewDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.ReviewDAO;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,12 +40,39 @@ public class ReviewService {
         Product product = productService.findById(body.product_id());
         User user = userService.findById(body.user_buyer_id());
         Order order = orderService.findById(body.order_id());
-        Review newReview = new Review();
-        newReview.setRating(body.rating());
-        newReview.setDescription(body.description());
-        newReview.setShopReview(shop);
-        newReview.setProductReview(product);
-        newReview.setBuyerReview(user);
-        return reviewDAO.save(newReview);
+        boolean isOrdered = orderService.isUserOrderedProductInShop(String.valueOf(user.getUserId()), String.valueOf(product.getProductId()), String.valueOf(shop.getShopId()));
+        if(!isOrdered) {
+            throw new IllegalStateException("L'utente non ha effettuato un ordine per questo prodotto in questo negozio");
+        }
+            Review newReview = new Review();
+            newReview.setRating(body.rating());
+            newReview.setDescription(body.description());
+            newReview.setShopReview(shop);
+            newReview.setProductReview(product);
+            newReview.setBuyerReview(user);
+            newReview.setOrderReview(order);
+            return reviewDAO.save(newReview);
     }
+    public Review updateReview(int reviewId, ReviewDTO body){
+        Review foundReview = this.findById(reviewId);
+        Shop shop = shopService.findById(body.shop_id());
+        Product product = productService.findById(body.product_id());
+        User user = userService.findById(body.user_buyer_id());
+        Order order = orderService.findById(body.order_id());
+        foundReview.setRating(body.rating());
+        foundReview.setDescription(body.description());
+        foundReview.setShopReview(shop);
+        foundReview.setProductReview(product);
+        foundReview.setBuyerReview(user);
+        foundReview.setOrderReview(order);
+        return reviewDAO.save(foundReview);
+    }
+    public void deleteReview(int reviewId){
+        Review foundreview = this.findById(reviewId);
+        reviewDAO.delete(foundreview);
+    }
+    public List<Review> filterByShop(int id){
+        return reviewDAO.filterByShop(id);
+    }
+
 }

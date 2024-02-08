@@ -25,4 +25,8 @@ public class Order {
     private Payment payment;
     @OneToOne(mappedBy = "orderReview")
     private Review review;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User userId;
+
 }
