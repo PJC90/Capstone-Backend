@@ -5,9 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pierpaolo.colasante.CapstoneBackend.entities.Shop;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
+import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ShopDTO;
 import pierpaolo.colasante.CapstoneBackend.services.ShopService;
 
@@ -26,8 +29,13 @@ public class ShopController {
     @PreAuthorize("hasAuthority('SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
     // diventi SELLER con put /seller senza passare niente nel body!
-    public Shop saveNewShop(@AuthenticationPrincipal User user, @RequestBody ShopDTO payload){
-        return shopService.saveShop(user, payload);
+    public Shop saveNewShop(@AuthenticationPrincipal User user, @RequestBody @Validated ShopDTO payload, BindingResult validation){
+        if(validation.hasErrors()){
+            System.out.println(validation.getAllErrors());
+            throw new BadRequestException(validation.getAllErrors());
+        } else{
+            return shopService.saveShop(user, payload);
+        }
     }
     @PutMapping("/{shopId}")
     @PreAuthorize("hasAuthority('SELLER')")

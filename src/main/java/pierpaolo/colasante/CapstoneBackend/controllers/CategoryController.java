@@ -3,8 +3,11 @@ package pierpaolo.colasante.CapstoneBackend.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pierpaolo.colasante.CapstoneBackend.entities.Category;
+import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.CategoryDTO;
 import pierpaolo.colasante.CapstoneBackend.services.CategoryService;
 
@@ -22,8 +25,12 @@ public class CategoryController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Category salvaCategoria(@RequestBody CategoryDTO body){
-        return categoryService.salvaCategoria(body);
+    public Category salvaCategoria(@RequestBody @Validated CategoryDTO body, BindingResult validation){
+        if(validation.hasErrors()){
+            throw new BadRequestException(validation.getAllErrors());
+        }else {
+            return categoryService.salvaCategoria(body);
+        }
     }
     @PutMapping("/{categoriaId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")

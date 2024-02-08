@@ -1,13 +1,14 @@
 package pierpaolo.colasante.CapstoneBackend.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pierpaolo.colasante.CapstoneBackend.payloads.errorDTO.ErrorDTO;
 import pierpaolo.colasante.CapstoneBackend.payloads.errorDTO.ErrorDTOwithList;
 
-import java.nio.file.AccessDeniedException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class ExceptionsHandler {
     public ErrorDTO handleUnauthorized(UnauthorizedException ex){
         return new ErrorDTO(ex.getMessage(), LocalDateTime.now());
     }
-    @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler(AccessDeniedException.class) // AccessDeniedException --> org.springframework.security.access.
     @ResponseStatus(HttpStatus.FORBIDDEN)  //403
     public ErrorDTO handleAccessDenied(AccessDeniedException ex){
         return new ErrorDTO("Il tuo ruolo non permette di accedere a questa funzionalità", LocalDateTime.now());
