@@ -30,6 +30,7 @@ public class ShopService {
     }
 
     public Shop saveShop(User user, ShopDTO body){
+        System.out.println(body.shopName());
         UUID userId = user.getUserId();
         Shop newShop = new Shop();
         User foundSeller = userService.findById(userId);
