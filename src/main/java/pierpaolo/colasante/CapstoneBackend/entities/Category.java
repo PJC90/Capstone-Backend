@@ -7,13 +7,11 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Categories {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
-    private String nameplate;
+    private String nameCategory;
     @OneToOne(mappedBy = "category")
-    private Product productCategory;
-
-
+    private Product product;
 }

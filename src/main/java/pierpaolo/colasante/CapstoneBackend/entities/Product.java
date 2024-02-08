@@ -21,9 +21,6 @@ public class Product {
     private ProductType productType;
     private double price;
     private int quantity;
-    @OneToOne
-    @JoinColumn(name = "category_id")
-    private Categories category;
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
@@ -38,4 +35,7 @@ public class Product {
     private String photo1;
     private String photo2;
     private String photo3;
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
