@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pierpaolo.colasante.CapstoneBackend.entities.Cart;
+import pierpaolo.colasante.CapstoneBackend.entities.Product;
 import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.CartDTO;
 import pierpaolo.colasante.CapstoneBackend.services.CartService;
@@ -22,6 +23,9 @@ public class CartController {
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<Cart> allCart(){return cartService.findAllCart();}
+    @GetMapping("/{cartId}")
+    public List<Product> allProductInCart(@PathVariable UUID cartId){
+        return cartService.getAllProductInCart(cartId);}
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -31,6 +35,11 @@ public class CartController {
         }else{
             return cartService.saveCart(body);
         }
+    }
+    @PostMapping("/{cartId}/product")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addProductToCart(@PathVariable UUID cartId, @RequestBody Product product){
+        cartService.addProductToCart(cartId, product);
     }
     @DeleteMapping("/{cartId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

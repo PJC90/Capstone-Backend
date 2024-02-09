@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pierpaolo.colasante.CapstoneBackend.entities.Product;
+import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ProductDTO;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ProductResponseDTO;
 import pierpaolo.colasante.CapstoneBackend.services.ProductService;
@@ -31,15 +34,23 @@ public class ProductController {
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductResponseDTO saveProduct(@RequestBody ProductDTO payload){
-        Product product = productService.saveProduct(payload);
-        return new ProductResponseDTO(product.getProductId());
+    public ProductResponseDTO saveProduct(@RequestBody @Validated ProductDTO payload, BindingResult validation){
+       if(validation.hasErrors()){
+           throw new BadRequestException(validation.getAllErrors());
+       }else{
+           Product product = productService.saveProduct(payload);
+           return new ProductResponseDTO(product.getProductId());
+       }
     }
     @PutMapping("/{productId}")
     @PreAuthorize("hasAuthority('SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product saveProduct(@PathVariable UUID productId, @RequestBody ProductDTO payload){
-        return productService.updateProduct(productId, payload);
+    public Product saveProduct(@PathVariable UUID productId, @RequestBody @Validated ProductDTO payload, BindingResult validation){
+        if(validation.hasErrors()){
+            throw new BadRequestException(validation.getAllErrors());
+        }else{
+            return productService.updateProduct(productId, payload);
+        }
     }
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasAuthority('SELLER')")

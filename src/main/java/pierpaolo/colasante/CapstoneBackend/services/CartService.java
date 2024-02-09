@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pierpaolo.colasante.CapstoneBackend.entities.Cart;
+import pierpaolo.colasante.CapstoneBackend.entities.Product;
 import pierpaolo.colasante.CapstoneBackend.entities.Review;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
@@ -23,6 +24,10 @@ public class CartService {
     @Autowired
     private UserService userService;
     public List<Cart> findAllCart(){return cartDAO.findAll();}
+    public List<Product> getAllProductInCart(UUID cartId){
+        Cart cart = cartDAO.findById(cartId).orElseThrow(()->new NotFoundException(cartId));
+        return cart.getProductListCart();
+    }
     public Cart findById(UUID cartId){
         return cartDAO.findById(cartId).
                 orElseThrow(()->new NotFoundException(cartId));}
@@ -35,5 +40,10 @@ public class CartService {
         User user = userService.findById(body.user_id());
         newCart.setUser(user);
         return cartDAO.save(newCart);
+    }
+    public void addProductToCart(UUID cartId, Product product){
+        Cart cart = cartDAO.findById(cartId).orElseThrow(()->new NotFoundException(cartId));
+        cart.getProductListCart().add(product);
+        cartDAO.save(cart);
     }
 }

@@ -6,11 +6,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import pierpaolo.colasante.CapstoneBackend.entities.Order;
-import pierpaolo.colasante.CapstoneBackend.entities.Product;
+import pierpaolo.colasante.CapstoneBackend.entities.*;
+import pierpaolo.colasante.CapstoneBackend.entities.enums.StatusOrder;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.OrderDTO;
+import pierpaolo.colasante.CapstoneBackend.repositories.CartDAO;
 import pierpaolo.colasante.CapstoneBackend.repositories.OrderDAO;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,9 +22,23 @@ import java.util.UUID;
 public class OrderService {
     @Autowired
     private OrderDAO orderDAO;
+    @Autowired
+    private CartService cartService;
+    @Autowired
+    private UserService userService;
     public Page<Order> findAllOrder(int size, int page, String order){
         Pageable pageable= PageRequest.of(size, page, Sort.by(order));
         return orderDAO.findAll(pageable);
+    }
+    public Order saveOrder(OrderDTO body){
+        User user = userService.findById(body.user_id());
+        Cart cart = cartService.findById(body.cart_id());
+        Order newOrder = new Order();
+        newOrder.setUserId(user);
+        newOrder.setCart(cart);
+        newOrder.setOrderDate(LocalDateTime.now());
+        newOrder.setStatusOrder(StatusOrder.IN_PROGRESS);
+        return orderDAO.save(newOrder);
     }
     public Order findById(UUID orderId){
         return orderDAO.findById(orderId).

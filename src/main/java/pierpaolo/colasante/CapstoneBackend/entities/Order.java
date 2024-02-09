@@ -28,5 +28,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User userId;
-
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 }
