@@ -1,5 +1,5 @@
 package pierpaolo.colasante.CapstoneBackend.entities.enums;
 
-public enum OrderType {
-    DELIVERED, NOT_DELIVERED
+public enum StatusOrder {
+     IN_PROGRESS, SHIPPED, DELIVERED
 }
