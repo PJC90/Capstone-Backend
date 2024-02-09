@@ -17,7 +17,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@JsonIgnoreProperties({ "authorities", "accountNonExpired", "enabled", "accountNonLocked", "credentialsNonExpired", "reviewBuyerList", "shopList"})
+@JsonIgnoreProperties({ "authorities", "accountNonExpired", "enabled", "accountNonLocked", "credentialsNonExpired", "reviewBuyerList", "shopList", "cart"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue
@@ -37,6 +37,8 @@ public class User implements UserDetails {
     private List<Review> reviewBuyerList;
     @OneToMany(mappedBy = "userId")
     private List<Order> orderList;
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 
     public void becomeSeller(){
         this.role = Roles.SELLER;

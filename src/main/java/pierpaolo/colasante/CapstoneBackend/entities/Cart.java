@@ -16,4 +16,7 @@ public class Cart {
     private UUID cartId;
     @OneToMany(mappedBy = "productCart")
     private List<Product> productListCart;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
