@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
 import pierpaolo.colasante.CapstoneBackend.entities.enums.Roles;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.UserDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.UserDAO;
 
 import java.io.IOException;
@@ -32,13 +33,13 @@ public class UserService {
     public User findById(UUID userId){
         return userDAO.findById(userId).orElseThrow(()->new NotFoundException(userId));
     }
-    public User userUpdate(UUID userId, User body){
+    public User userUpdate(UUID userId, UserDTO body){
         User update = this.findById(userId);
-        if(body.getName() != null){update.setName(body.getName());}
-        if(body.getSurname() != null){update.setSurname(body.getSurname());}
-        if(body.getBirthday() != null){update.setBirthday(body.getBirthday());}
-        if(body.getUsername() != null){update.setUsername(body.getUsername());}
-        if(body.getEmail() != null){update.setEmail(body.getEmail());}
+        if(body.name() != null){update.setName(body.name());}
+        if(body.surname() != null){update.setSurname(body.surname());}
+        if(body.birthday() != null){update.setBirthday(body.birthday());}
+        if(body.username() != null){update.setUsername(body.username());}
+        if(body.email() != null){update.setEmail(body.email());}
         return userDAO.save(update);
     }
     public void userDelete(UUID userId){

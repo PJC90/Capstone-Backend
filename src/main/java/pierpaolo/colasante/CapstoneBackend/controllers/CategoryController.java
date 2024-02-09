@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import pierpaolo.colasante.CapstoneBackend.entities.Category;
 import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.CategoryDTO;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.CategoryResponseDTO;
 import pierpaolo.colasante.CapstoneBackend.services.CategoryService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/cat")
+@RequestMapping("/category")
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
@@ -25,11 +26,12 @@ public class CategoryController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Category salvaCategoria(@RequestBody @Validated CategoryDTO body, BindingResult validation){
+    public CategoryResponseDTO salvaCategoria(@RequestBody @Validated CategoryDTO body, BindingResult validation){
         if(validation.hasErrors()){
             throw new BadRequestException(validation.getAllErrors());
         }else {
-            return categoryService.salvaCategoria(body);
+            Category category = categoryService.salvaCategoria(body);
+            return new CategoryResponseDTO(category.getCategoryId());
         }
     }
     @PutMapping("/{categoriaId}")

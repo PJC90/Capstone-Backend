@@ -11,9 +11,9 @@ import pierpaolo.colasante.CapstoneBackend.entities.Shop;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ShopDTO;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ShopResponseDTO;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.UserDTO;
 import pierpaolo.colasante.CapstoneBackend.services.UserService;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/me")
     public User profilePage(@AuthenticationPrincipal User user) {return user;}
     @PutMapping("/me")
-    public User updateUser(@AuthenticationPrincipal User user, @RequestBody User body){
+    public User updateUser(@AuthenticationPrincipal User user, @RequestBody UserDTO body){
         return userService.userUpdate(user.getUserId(), body);
     }
     @DeleteMapping("/me")

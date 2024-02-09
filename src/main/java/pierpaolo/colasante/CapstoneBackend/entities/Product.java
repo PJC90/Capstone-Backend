@@ -1,16 +1,20 @@
 package pierpaolo.colasante.CapstoneBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import pierpaolo.colasante.CapstoneBackend.entities.enums.ProductType;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties({ "shop", "reviewProduct", "productCart", "productOrder", "category"})
 public class Product {
     @Id
     @GeneratedValue
@@ -21,6 +25,10 @@ public class Product {
     private ProductType productType;
     private double price;
     private int quantity;
+    private LocalDate dateCreation;
+    private String photo1;
+    private String photo2;
+    private String photo3;
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
@@ -32,9 +40,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order productOrder;
-    private String photo1;
-    private String photo2;
-    private String photo3;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
