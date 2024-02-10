@@ -47,6 +47,9 @@ public class ProductService {
         newProduct.setShop(shop);
         newProduct.setCategory(category);
         newProduct.setProductType(body.productType());
+        newProduct.setPhoto1("https://ui-avatars.com/api/?name=" + "1");
+        newProduct.setPhoto2("https://ui-avatars.com/api/?name=" + "2");
+        newProduct.setPhoto3("https://ui-avatars.com/api/?name=" + "3");
         return productDAO.save(newProduct);
     }
     public Product updateProduct(UUID productId, ProductDTO body){

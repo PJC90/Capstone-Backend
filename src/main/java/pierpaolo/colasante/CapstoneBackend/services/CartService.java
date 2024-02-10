@@ -1,17 +1,12 @@
 package pierpaolo.colasante.CapstoneBackend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pierpaolo.colasante.CapstoneBackend.entities.Cart;
 import pierpaolo.colasante.CapstoneBackend.entities.Product;
-import pierpaolo.colasante.CapstoneBackend.entities.Review;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
-import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.CartDTO;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ProductIdDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.CartDAO;
 
 import java.util.List;
@@ -23,6 +18,8 @@ public class CartService {
     private CartDAO cartDAO;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProductService productService;
     public List<Cart> findAllCart(){return cartDAO.findAll();}
     public List<Product> getAllProductInCart(UUID cartId){
         Cart cart = cartDAO.findById(cartId).orElseThrow(()->new NotFoundException(cartId));
@@ -35,15 +32,20 @@ public class CartService {
         Cart found = this.findById(cartId);
         cartDAO.delete(found);
     }
-    public Cart saveCart(CartDTO body){
+    public Cart saveCart(UUID userId){
         Cart newCart = new Cart();
-        User user = userService.findById(body.user_id());
+        User user = userService.findById(userId);
         newCart.setUser(user);
         return cartDAO.save(newCart);
     }
-    public void addProductToCart(UUID cartId, Product product){
+    public Cart addProductToCart(UUID cartId, ProductIdDTO productId){
         Cart cart = cartDAO.findById(cartId).orElseThrow(()->new NotFoundException(cartId));
-        cart.getProductListCart().add(product);
-        cartDAO.save(cart);
+        Product foundProduct = productService.findById(productId.productId());
+        if(foundProduct != null) {
+            cart.getProductListCart().add(foundProduct);
+           return cartDAO.save(cart);
+        }else{
+            throw new NotFoundException(productId.productId());
+        }
     }
 }

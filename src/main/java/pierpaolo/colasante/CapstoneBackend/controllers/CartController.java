@@ -3,13 +3,12 @@ package pierpaolo.colasante.CapstoneBackend.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pierpaolo.colasante.CapstoneBackend.entities.Cart;
 import pierpaolo.colasante.CapstoneBackend.entities.Product;
-import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
-import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.CartDTO;
+import pierpaolo.colasante.CapstoneBackend.entities.User;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ProductIdDTO;
 import pierpaolo.colasante.CapstoneBackend.services.CartService;
 
 import java.util.List;
@@ -29,17 +28,13 @@ public class CartController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cart saveCart(@RequestBody @Validated CartDTO body, BindingResult validation){
-        if(validation.hasErrors()){
-            throw new BadRequestException(validation.getAllErrors());
-        }else{
-            return cartService.saveCart(body);
-        }
+    public Cart saveCart(@AuthenticationPrincipal User user){
+            return cartService.saveCart(user.getUserId());
     }
     @PostMapping("/{cartId}/product")
     @ResponseStatus(HttpStatus.CREATED)
-    public void addProductToCart(@PathVariable UUID cartId, @RequestBody Product product){
-        cartService.addProductToCart(cartId, product);
+    public Cart addProductToCart(@PathVariable UUID cartId, @RequestBody ProductIdDTO productId){
+        return cartService.addProductToCart(cartId, productId);
     }
     @DeleteMapping("/{cartId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

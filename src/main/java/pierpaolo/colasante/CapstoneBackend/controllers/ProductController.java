@@ -22,7 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @GetMapping
-    public Page<Product> productList(@RequestParam(defaultValue = "0") int page,
+    public Page<Product> allProductList(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
                                      @RequestParam(defaultValue = "dateCreation") String order){
         return productService.findAllProduct(page, size, order);
@@ -45,12 +45,8 @@ public class ProductController {
     @PutMapping("/{productId}")
     @PreAuthorize("hasAuthority('SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product saveProduct(@PathVariable UUID productId, @RequestBody @Validated ProductDTO payload, BindingResult validation){
-        if(validation.hasErrors()){
-            throw new BadRequestException(validation.getAllErrors());
-        }else{
+    public Product saveProduct(@PathVariable UUID productId, @RequestBody  ProductDTO payload){
             return productService.updateProduct(productId, payload);
-        }
     }
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasAuthority('SELLER')")

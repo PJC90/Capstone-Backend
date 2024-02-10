@@ -14,7 +14,12 @@ public class Cart {
     @Id
     @GeneratedValue
     private UUID cartId;
-    @OneToMany(mappedBy = "productCart", fetch = FetchType.EAGER)
+    @ManyToMany
+    @JoinTable(
+            name = "cart_product",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private List<Product> productListCart;
     @OneToOne
     @JoinColumn(name = "user_id")
