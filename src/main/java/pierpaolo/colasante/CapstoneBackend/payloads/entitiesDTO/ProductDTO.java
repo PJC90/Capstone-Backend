@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public record ProductDTO(
         @NotEmpty(message = "Il titolo è obbligatorio")
-        @Size(min = 10, max = 100, message = "Il titolo deve avere minimo 10 caratteri, massimo 100")
+        @Size(min = 3, max = 100, message = "Il titolo deve avere minimo 3 caratteri, massimo 100")
         String title,
         @NotEmpty(message = "La descrizione è obbligatoria")
         @Size(min = 10, max = 500, message = "La descrizione deve avere minimo 10 caratteri, massimo 500")

@@ -15,8 +15,6 @@ public record ReviewDTO(
         int shop_id,
         @NotNull(message = "l'id del prodotto è un campo obbligatorio!")
         UUID product_id,
-        @NotNull(message = "l'id del venditore è un campo obbligatorio!")
-        UUID user_buyer_id,
         @NotNull(message = "l'id dell' ordine è un campo obbligatorio!")
         UUID order_id
 ) {

@@ -36,8 +36,11 @@ public class CartController {
     public Cart addProductToCart(@PathVariable UUID cartId, @RequestBody ProductIdDTO productId){
         return cartService.addProductToCart(cartId, productId);
     }
-    @DeleteMapping("/{cartId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCart(@PathVariable UUID cartId){cartService.deleteCart(cartId);}
+
+//    Per come è impostato il progetto non puoi eliminare il carrello per avere traccia nell'ordine la lista di prodotti acquistati
+//    In teoria una volta fatto l'ordine se user vuole acquistare di nuovo deve creare un nuovo carrello
+//    @DeleteMapping("/{cartId}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void deleteCart(@PathVariable UUID cartId){cartService.deleteCart(cartId);}
 
 }

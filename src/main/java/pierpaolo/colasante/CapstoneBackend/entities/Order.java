@@ -1,5 +1,6 @@
 package pierpaolo.colasante.CapstoneBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +20,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private StatusOrder statusOrder;
     private LocalDateTime orderDate;
-    @OneToMany(mappedBy = "productOrder")
-    private List<Product> productListOrder;
     @OneToOne(mappedBy = "order")
     private Payment payment;
     @OneToOne(mappedBy = "orderReview")

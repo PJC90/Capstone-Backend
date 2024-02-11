@@ -30,8 +30,8 @@ public class OrderService {
         Pageable pageable= PageRequest.of(size, page, Sort.by(order));
         return orderDAO.findAll(pageable);
     }
-    public Order saveOrder(OrderDTO body){
-        User user = userService.findById(body.user_id());
+    public Order saveOrder(UUID userId, OrderDTO body){
+        User user = userService.findById(userId);
         Cart cart = cartService.findById(body.cart_id());
         Order newOrder = new Order();
         newOrder.setUserId(user);
@@ -43,23 +43,27 @@ public class OrderService {
     public Order findById(UUID orderId){
         return orderDAO.findById(orderId).
                 orElseThrow(()->new NotFoundException(orderId));}
-    public boolean isUserOrderedProductInShop(String userId, String productId, String shopId) {
-        // Converti shopId da String a int
-        int shopIdInt = Integer.parseInt(shopId);
+    public boolean isUserOrderedProductInShop(User user, Product product, Shop shop) {
 
         // Ottieni gli ordini dell'utente
-        List<Order> userOrders = orderDAO.findByUserId(UUID.fromString(userId));
+        List<Order> userOrders = orderDAO.findByUserId(user.getUserId());
 
         // Scansiona gli ordini dell'utente per cercare una corrispondenza
         for (Order order : userOrders) {
-            // Scansiona la lista dei prodotti in quell'ordine
-            for (Product product : order.getProductListOrder()) {
-                // Verifica se uno dei prodotti in quell'ordine corrisponde all'ID del prodotto fornito
-                if (product.getProductId().equals(productId)) {
-                    // Verifica se il negozio associato al prodotto corrisponde all'ID del negozio fornito
-                    if (product.getShop().getShopId() == shopIdInt) {
-                        // Se trovi una corrispondenza, restituisci true
-                        return true;
+            // Ottieni il carrello associato all'ordine
+            Cart cart = order.getCart();
+
+            // Verifica se il carrello è valido
+            if (cart != null) {
+                // Scansiona la lista dei prodotti nel carrello
+                for (Product productscan : cart.getProductListCart()) {
+                    // Verifica se uno dei prodotti nel carrello corrisponde all'ID del prodotto fornito
+                    if (productscan.getProductId().equals(product.getProductId())) {
+                        // Verifica se il negozio associato al prodotto corrisponde all'ID del negozio fornito
+                        if (productscan.getShop().getShopId() == shop.getShopId()) {
+                            // Se trovi una corrispondenza, restituisci true
+                            return true;
+                        }
                     }
                 }
             }
@@ -67,4 +71,5 @@ public class OrderService {
         // Se non trovi alcuna corrispondenza, restituisci false
         return false;
     }
+
 }

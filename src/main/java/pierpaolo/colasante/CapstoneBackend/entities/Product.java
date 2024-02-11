@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@JsonIgnoreProperties({ "shop", "reviewProduct", "carts", "productOrder", "category"})
+@JsonIgnoreProperties({ "shop", "reviewProduct", "carts", "category"})
 public class Product {
     @Id
     @GeneratedValue
@@ -36,9 +36,6 @@ public class Product {
     private List<Review> reviewProduct;
     @ManyToMany(mappedBy = "productListCart")
     private List<Cart> carts;
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order productOrder;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

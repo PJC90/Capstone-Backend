@@ -1,5 +1,6 @@
 package pierpaolo.colasante.CapstoneBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties({"shopReview", "productReview", "buyerReview", "orderReview"})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
