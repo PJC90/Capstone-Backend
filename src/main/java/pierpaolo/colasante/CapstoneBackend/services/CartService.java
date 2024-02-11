@@ -32,18 +32,17 @@ public class CartService {
         Cart found = this.findById(cartId);
         cartDAO.delete(found);
     }
-    public Cart saveCart(UUID userId){
-        Cart newCart = new Cart();
+    public Cart addProductToCart(UUID userId, ProductIdDTO productId){
         User user = userService.findById(userId);
-        newCart.setUser(user);
-        return cartDAO.save(newCart);
-    }
-    public Cart addProductToCart(UUID cartId, ProductIdDTO productId){
-        Cart cart = cartDAO.findById(cartId).orElseThrow(()->new NotFoundException(cartId));
+        Cart existingCart = cartDAO.findByUser(user);
+        if(existingCart == null){
+            existingCart = new Cart();
+            existingCart.setUser(user);
+        }
         Product foundProduct = productService.findById(productId.productId());
         if(foundProduct != null) {
-            cart.getProductListCart().add(foundProduct);
-           return cartDAO.save(cart);
+            existingCart.getProductListCart().add(foundProduct);
+           return cartDAO.save(existingCart);
         }else{
             throw new NotFoundException(productId.productId());
         }

@@ -26,21 +26,13 @@ public class CartController {
     public List<Product> allProductInCart(@PathVariable UUID cartId){
         return cartService.getAllProductInCart(cartId);}
 
-    @PostMapping
+    @PostMapping("/addproduct")
     @ResponseStatus(HttpStatus.CREATED)
-    public Cart saveCart(@AuthenticationPrincipal User user){
-            return cartService.saveCart(user.getUserId());
-    }
-    @PostMapping("/{cartId}/product")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Cart addProductToCart(@PathVariable UUID cartId, @RequestBody ProductIdDTO productId){
-        return cartService.addProductToCart(cartId, productId);
+    public Cart addProductToCart(@AuthenticationPrincipal User user, @RequestBody ProductIdDTO productId){
+        return cartService.addProductToCart(user.getUserId(), productId);
     }
 
-//    Per come è impostato il progetto non puoi eliminare il carrello per avere traccia nell'ordine la lista di prodotti acquistati
-//    In teoria una volta fatto l'ordine se user vuole acquistare di nuovo deve creare un nuovo carrello
-//    @DeleteMapping("/{cartId}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void deleteCart(@PathVariable UUID cartId){cartService.deleteCart(cartId);}
+//    Per come è impostato il progetto non puoi eliminare il carrello
+//    i prodotti del carrello una volta pagati, vanno a finire in order e la lista di prodotti nel carrello si svuota
 
 }

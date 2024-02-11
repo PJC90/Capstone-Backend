@@ -24,7 +24,7 @@ public class ReviewController {
     @GetMapping
     public Page<Review> reviewsList(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size,
-                                 @RequestParam(defaultValue = "shopId") String order){
+                                 @RequestParam(defaultValue = "rating") String order){
         return reviewService.findAllReview(page, size, order);
     }
     @GetMapping("/filter")

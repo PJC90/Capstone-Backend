@@ -7,12 +7,14 @@ import lombok.Setter;
 import pierpaolo.colasante.CapstoneBackend.entities.enums.StatusOrder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties({"cart"})
 public class Order {
     @Id
     @GeneratedValue
@@ -24,10 +26,24 @@ public class Order {
     private Payment payment;
     @OneToOne(mappedBy = "orderReview")
     private Review review;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User userId;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cart_id")
     private Cart cart;
+    @ManyToMany
+    @JoinTable(
+            name = "order_product",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> products;
+
+    public void addProduct(Product product) {
+        if(this.products == null) {
+            this.products = new ArrayList<>();
+        }
+        this.products.add(product);
+    }
 }

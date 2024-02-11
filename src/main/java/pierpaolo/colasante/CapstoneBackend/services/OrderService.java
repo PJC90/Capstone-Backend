@@ -38,6 +38,14 @@ public class OrderService {
         newOrder.setCart(cart);
         newOrder.setOrderDate(LocalDateTime.now());
         newOrder.setStatusOrder(StatusOrder.IN_PROGRESS);
+        // Spostamento dei prodotti dal carrello all'ordine
+        List<Product> productsInCart = cart.getProductListCart();
+        for(Product product : productsInCart) {
+            newOrder.addProduct(product);
+        }
+        // Rimozione dei prodotti dal carrello
+        cart.getProductListCart().clear();
+        // Salvataggio dell'ordine con i prodotti
         return orderDAO.save(newOrder);
     }
     public Order findById(UUID orderId){
