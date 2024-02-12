@@ -13,3 +13,5 @@ public interface OrderDAO extends JpaRepository<Order, UUID> {
     @Query("SELECT o FROM Order o JOIN o.userId u WHERE u.userId = :userId")
     List<Order> findByUserId(@Param("userId") UUID userId);
 }
+
+// SELECT o FROM Order o JOIN o.userId u WHERE u.userId = :userId AND o.statusOrder = 'COMPLETED'

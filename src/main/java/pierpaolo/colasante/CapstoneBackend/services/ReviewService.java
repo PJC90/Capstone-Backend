@@ -40,6 +40,10 @@ public class ReviewService {
         Product product = productService.findById(body.product_id());
         User user = userService.findById(userId);
         Order order = orderService.findById(body.order_id());
+        // Controlla se l'utente ha già lasciato una recensione per lo stesso prodotto in questo ordine
+        if (reviewDAO.existsByOrderReviewAndProductReviewAndBuyerReview(order, product, user)) {
+            throw new IllegalStateException("L'utente ha già lasciato una recensione per questo prodotto in questo ordine");
+        }
         boolean isOrdered = orderService.isUserOrderedProductInShop(user, product, shop);
         if(!isOrdered) {
             throw new IllegalStateException("L'utente non ha effettuato un ordine per questo prodotto in questo negozio");

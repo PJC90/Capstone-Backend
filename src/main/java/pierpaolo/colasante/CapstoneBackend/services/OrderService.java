@@ -9,11 +9,8 @@ import org.springframework.stereotype.Service;
 import pierpaolo.colasante.CapstoneBackend.entities.*;
 import pierpaolo.colasante.CapstoneBackend.entities.enums.StatusOrder;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
-import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.OrderDTO;
-import pierpaolo.colasante.CapstoneBackend.repositories.CartDAO;
 import pierpaolo.colasante.CapstoneBackend.repositories.OrderDAO;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -30,9 +27,9 @@ public class OrderService {
         Pageable pageable= PageRequest.of(size, page, Sort.by(order));
         return orderDAO.findAll(pageable);
     }
-    public Order saveOrder(UUID userId, OrderDTO body){
+    public Order saveOrder(UUID userId, UUID cartId){
         User user = userService.findById(userId);
-        Cart cart = cartService.findById(body.cart_id());
+        Cart cart = cartService.findById(cartId);
         Order newOrder = new Order();
         newOrder.setUserId(user);
         newOrder.setCart(cart);

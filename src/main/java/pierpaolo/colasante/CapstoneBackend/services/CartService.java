@@ -6,7 +6,6 @@ import pierpaolo.colasante.CapstoneBackend.entities.Cart;
 import pierpaolo.colasante.CapstoneBackend.entities.Product;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
-import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ProductIdDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.CartDAO;
 
 import java.util.List;
@@ -32,29 +31,29 @@ public class CartService {
         Cart found = this.findById(cartId);
         cartDAO.delete(found);
     }
-    public Cart addProductToCart(UUID userId, ProductIdDTO productId){
+    public Cart addProductToCart(UUID userId, UUID productId){
         User user = userService.findById(userId);
         Cart existingCart = cartDAO.findByUser(user);
         if(existingCart == null){
             existingCart = new Cart();
             existingCart.setUser(user);
         }
-        Product foundProduct = productService.findById(productId.productId());
+        Product foundProduct = productService.findById(productId);
         if(foundProduct != null) {
             existingCart.getProductListCart().add(foundProduct);
            return cartDAO.save(existingCart);
         }else{
-            throw new NotFoundException(productId.productId());
+            throw new NotFoundException(productId);
         }
     }
-    public Cart removeProductFromCart(UUID userId, ProductIdDTO productId){
+    public Cart removeProductFromCart(UUID userId, UUID productId){
         User user = userService.findById(userId);
         Cart existingCart = cartDAO.findByUser(user);
         if(existingCart == null){
             // Se il carrello non esiste, non c'è nulla da rimuovere, quindi possiamo restituire il carrello esistente
             return existingCart;
         }
-        Product foundProduct = productService.findById(productId.productId());
+        Product foundProduct = productService.findById(productId);
         if(foundProduct != null) {
             existingCart.getProductListCart().remove(foundProduct);
             return cartDAO.save(existingCart);
