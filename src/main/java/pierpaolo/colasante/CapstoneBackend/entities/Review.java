@@ -14,6 +14,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewId;
     private int rating;
+    private String photoReview;
     private String description;
     @ManyToOne
     @JoinColumn(name = "shop_id")

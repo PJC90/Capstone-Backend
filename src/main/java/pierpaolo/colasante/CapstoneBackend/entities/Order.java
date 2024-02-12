@@ -46,4 +46,17 @@ public class Order {
         }
         this.products.add(product);
     }
+    // PostPersist PostUpdate -> verrà eseguito dopo che un ordine è stato persistito o aggiornato nel database.
+    @PostPersist
+    @PostUpdate
+    public void updateShopSales() {
+        if (this.products != null && this.userId != null) {
+            for (Product product : this.products) {
+                Shop shop = product.getShop();
+                if (shop != null) {
+                    shop.incrementNumberOfSales(1);
+                }
+            }
+        }
+    }
 }

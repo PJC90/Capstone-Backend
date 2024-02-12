@@ -25,4 +25,8 @@ public class Shop {
     private List<Product> productList;
     @OneToMany(mappedBy = "shopReview")
     private List<Review> reviewList;
+
+    public void incrementNumberOfSales(int increment) {
+        this.numberOfSales += increment;
+    }
 }

@@ -1,5 +1,6 @@
 package pierpaolo.colasante.CapstoneBackend.services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +28,10 @@ public class OrderService {
         Pageable pageable= PageRequest.of(size, page, Sort.by(order));
         return orderDAO.findAll(pageable);
     }
+    public Order findById(UUID orderId){
+        return orderDAO.findById(orderId).
+                orElseThrow(()->new NotFoundException(orderId));}
+    @Transactional
     public Order saveOrder(UUID userId, UUID cartId){
         User user = userService.findById(userId);
         Cart cart = cartService.findById(cartId);
@@ -43,11 +48,11 @@ public class OrderService {
         // Rimozione dei prodotti dal carrello
         cart.getProductListCart().clear();
         // Salvataggio dell'ordine con i prodotti
-        return orderDAO.save(newOrder);
+        Order savedOrder = orderDAO.save(newOrder);
+        savedOrder.updateShopSales();
+        return savedOrder;
     }
-    public Order findById(UUID orderId){
-        return orderDAO.findById(orderId).
-                orElseThrow(()->new NotFoundException(orderId));}
+
     public boolean isUserOrderedProductInShop(User user, Product product, Shop shop) {
         // Ottieni gli ordini completati dell'utente
         List<Order> userCompletedOrders = orderDAO.findByUserId(user.getUserId());
