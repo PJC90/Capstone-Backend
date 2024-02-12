@@ -30,7 +30,6 @@ public class UserController {
         return userService.findAll(page, size, order);
     }
     @GetMapping("/seller")
-    @PreAuthorize("hasAuthority('SELLER')")
     public List<User> getSeller(){
         return userService.getSeller();
     }
@@ -51,7 +50,7 @@ public class UserController {
     }
     @PatchMapping("/{userId}/upload")
     @ResponseStatus(HttpStatus.CREATED)
-    public String uploadImageUser(@RequestParam("image")MultipartFile file, @PathVariable UUID userId) throws Exception {
+    public String uploadImage(@RequestParam("image")MultipartFile file, @PathVariable UUID userId) throws Exception {
         return userService.uploadImage(file, userId);
     }
 }

@@ -19,7 +19,7 @@ import java.util.UUID;
 @Setter
 @JsonIgnoreProperties({ "authorities", "accountNonExpired", "enabled",
         "accountNonLocked", "credentialsNonExpired", "reviewBuyerList",
-        "shopList", "cart", "orderList"})
+        "shopList", "cart", "orderList", "userBuyerDetail", "userSellerDetail"})
 public class User implements UserDetails {
     @Id
     @GeneratedValue
@@ -41,6 +41,10 @@ public class User implements UserDetails {
     private List<Order> orderList;
     @OneToOne(mappedBy = "user")
     private Cart cart;
+    @OneToOne(mappedBy = "buyerDetail")
+    private UserBuyerDetail userBuyerDetail;
+    @OneToOne(mappedBy = "sellerDetail")
+    private UserSellerDetail userSellerDetail;
 
     public void becomeSeller(){
         this.role = Roles.SELLER;

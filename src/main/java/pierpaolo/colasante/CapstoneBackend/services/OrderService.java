@@ -32,9 +32,9 @@ public class OrderService {
         return orderDAO.findById(orderId).
                 orElseThrow(()->new NotFoundException(orderId));}
     @Transactional
-    public Order saveOrder(UUID userId, UUID cartId){
+    public Order saveOrder(UUID userId){
         User user = userService.findById(userId);
-        Cart cart = cartService.findById(cartId);
+        Cart cart = cartService.findById(user.getCart().getCartId());
         Order newOrder = new Order();
         newOrder.setUserId(user);
         newOrder.setCart(cart);
