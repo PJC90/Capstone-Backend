@@ -28,11 +28,20 @@ public class CartController {
 
     @PostMapping("/addproduct")
     @ResponseStatus(HttpStatus.CREATED)
+    // se non esiste crea un nuovo Carrello e aggiunge prodotti
+    // se esiste aggiunge prodotti al carrello esistente
     public Cart addProductToCart(@AuthenticationPrincipal User user, @RequestBody ProductIdDTO productId){
         return cartService.addProductToCart(user.getUserId(), productId);
     }
 
 //    Per come è impostato il progetto non puoi eliminare il carrello
-//    i prodotti del carrello una volta pagati, vanno a finire in order e la lista di prodotti nel carrello si svuota
+//    (puoi solo rimuovere i prodotti dal carrello!)
+//    i prodotti del carrello una volta pagati, vanno a finire in order per avere uno storico di prodotti acquistati
+//    quindi la lista di prodotti nel carrello si svuota, e il carrello è pronto per essere riempito di nuovo
 
+    @DeleteMapping("/removeproduct")
+    @ResponseStatus(HttpStatus.OK)
+    public Cart removeProductFromCart(@AuthenticationPrincipal User user, @RequestBody ProductIdDTO productId){
+    return cartService.removeProductFromCart(user.getUserId(), productId);
+    }
 }

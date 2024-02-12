@@ -47,4 +47,20 @@ public class CartService {
             throw new NotFoundException(productId.productId());
         }
     }
+    public Cart removeProductFromCart(UUID userId, ProductIdDTO productId){
+        User user = userService.findById(userId);
+        Cart existingCart = cartDAO.findByUser(user);
+        if(existingCart == null){
+            // Se il carrello non esiste, non c'è nulla da rimuovere, quindi possiamo restituire il carrello esistente
+            return existingCart;
+        }
+        Product foundProduct = productService.findById(productId.productId());
+        if(foundProduct != null) {
+            existingCart.getProductListCart().remove(foundProduct);
+            return cartDAO.save(existingCart);
+        } else {
+            // Se il prodotto non è stato trovato, restituisci semplicemente il carrello esistente senza alcuna modifica
+            return existingCart;
+        }
+    }
 }

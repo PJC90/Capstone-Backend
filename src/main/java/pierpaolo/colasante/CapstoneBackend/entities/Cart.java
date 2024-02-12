@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,10 @@ public class Cart {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne(mappedBy = "cart")
-    private Order order;
+    @OneToMany(mappedBy = "cart")
+    private List<Order> order;
+
+    public Cart() {
+        this.productListCart = new ArrayList<>();
+    }
 }
