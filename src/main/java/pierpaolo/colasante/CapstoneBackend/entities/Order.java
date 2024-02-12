@@ -24,8 +24,8 @@ public class Order {
     private LocalDateTime orderDate;
     @OneToOne(mappedBy = "order")
     private Payment payment;
-    @OneToOne(mappedBy = "orderReview")
-    private Review review;
+    @OneToMany(mappedBy = "orderReview")
+    private List<Review> review;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User userId;

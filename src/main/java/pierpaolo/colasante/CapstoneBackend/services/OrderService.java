@@ -52,31 +52,16 @@ public class OrderService {
         return orderDAO.findById(orderId).
                 orElseThrow(()->new NotFoundException(orderId));}
     public boolean isUserOrderedProductInShop(User user, Product product, Shop shop) {
+        // Ottieni gli ordini completati dell'utente
+        List<Order> userCompletedOrders = orderDAO.findByUserId(user.getUserId());
 
-        // Ottieni gli ordini dell'utente
-        List<Order> userOrders = orderDAO.findByUserId(user.getUserId());
-
-        // Scansiona gli ordini dell'utente per cercare una corrispondenza
-        for (Order order : userOrders) {
-            // Ottieni il carrello associato all'ordine
-            Cart cart = order.getCart();
-
-            // Verifica se il carrello è valido
-            if (cart != null) {
-                // Scansiona la lista dei prodotti nel carrello
-                for (Product productscan : cart.getProductListCart()) {
-                    // Verifica se uno dei prodotti nel carrello corrisponde all'ID del prodotto fornito
-                    if (productscan.getProductId().equals(product.getProductId())) {
-                        // Verifica se il negozio associato al prodotto corrisponde all'ID del negozio fornito
-                        if (productscan.getShop().getShopId() == shop.getShopId()) {
-                            // Se trovi una corrispondenza, restituisci true
-                            return true;
-                        }
-                    }
-                }
+        // Scansiona gli ordini completati dell'utente
+        for (Order order : userCompletedOrders) {
+            // Verifica se l'ordine contiene il prodotto specificato nel negozio specificato
+            if (order.getProducts().contains(product) && product.getShop().equals(shop)) {
+                return true;
             }
         }
-        // Se non trovi alcuna corrispondenza, restituisci false
         return false;
     }
 

@@ -24,7 +24,7 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_buyer_id")
     private User buyerReview;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order orderReview;
 }
