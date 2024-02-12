@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pierpaolo.colasante.CapstoneBackend.entities.Review;
 import pierpaolo.colasante.CapstoneBackend.entities.Shop;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
@@ -15,6 +16,7 @@ import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ReviewDTO;
 import pierpaolo.colasante.CapstoneBackend.services.ReviewService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/review")
@@ -40,5 +42,10 @@ public class ReviewController {
         }else {
             return reviewService.saveReview(user.getUserId(), payload);
         }
+    }
+    @PatchMapping("/{reviewId}/photoreview")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String uploadPhotoReview(@RequestParam("photo") MultipartFile file, @PathVariable int reviewId) throws Exception{
+        return reviewService.uploadPhotoReview(file, reviewId);
     }
 }

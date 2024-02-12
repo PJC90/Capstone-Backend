@@ -1,16 +1,20 @@
 package pierpaolo.colasante.CapstoneBackend.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pierpaolo.colasante.CapstoneBackend.entities.*;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ReviewDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.ReviewDAO;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +30,8 @@ public class ReviewService {
     private UserService userService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private Cloudinary cloudinary;
 
     public Page<Review> findAllReview(int size, int page, String order){
         Pageable pageable= PageRequest.of(size, page, Sort.by(order));
@@ -50,6 +56,7 @@ public class ReviewService {
         }
             Review newReview = new Review();
             newReview.setRating(body.rating());
+            newReview.setPhotoReview("https://ui-avatars.com/api/?name=" + shop.getShopName());
             newReview.setDescription(body.description());
             newReview.setShopReview(shop);
             newReview.setProductReview(product);
@@ -60,5 +67,11 @@ public class ReviewService {
     public List<Review> filterByShop(int id){
         return reviewDAO.filterByShop(id);
     }
-
+    public String uploadPhotoReview(MultipartFile file, int reviewId) throws IOException {
+        Review found = this.findById(reviewId);
+        String url = (String)cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        found.setPhotoReview(url);
+        reviewDAO.save(found);
+        return url;
+    }
 }
