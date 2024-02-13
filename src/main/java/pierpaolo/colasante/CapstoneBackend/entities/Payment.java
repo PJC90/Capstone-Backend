@@ -3,6 +3,7 @@ package pierpaolo.colasante.CapstoneBackend.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import pierpaolo.colasante.CapstoneBackend.entities.enums.PaymentType;
 
 import java.util.UUID;
 
@@ -16,4 +17,6 @@ public class Payment {
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
+    private String transactionCode;
+    private PaymentType paymentType;
 }
