@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pierpaolo.colasante.CapstoneBackend.entities.Category;
 import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.CategoryDTO;
@@ -46,5 +47,11 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoria(@PathVariable int categoriaId){
         categoryService.deleteCategoria(categoriaId);
+    }
+
+    @PatchMapping("/{categoriaId}/photocategory")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String uploadPhotoCategory(@RequestParam("photo") MultipartFile file, @PathVariable int categoriaId) throws Exception{
+        return categoryService.uploadPhotoCategory(file, categoriaId);
     }
 }
