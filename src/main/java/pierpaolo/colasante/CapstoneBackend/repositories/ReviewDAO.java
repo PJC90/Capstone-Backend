@@ -16,6 +16,8 @@ import java.util.UUID;
 public interface ReviewDAO extends JpaRepository<Review, Integer> {
     @Query("SELECT i FROM Review i WHERE i.shopReview.shopId= :id")
     List<Review> filterByShop(@Param("id") int id);
+    @Query("SELECT i FROM Review i WHERE i.productReview.productId= :id")
+    List<Review> filterByProduct(@Param("id") UUID id);
 
     boolean existsByOrderReviewAndProductReviewAndBuyerReview(Order orderReview, Product productReview, User buyerReview);
 

@@ -67,6 +67,7 @@ public class ReviewService {
     public List<Review> filterByShop(int id){
         return reviewDAO.filterByShop(id);
     }
+    public List<Review> filterByProduct(UUID id){return reviewDAO.filterByProduct(id);}
     public String uploadPhotoReview(MultipartFile file, int reviewId) throws IOException {
         Review found = this.findById(reviewId);
         String url = (String)cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");

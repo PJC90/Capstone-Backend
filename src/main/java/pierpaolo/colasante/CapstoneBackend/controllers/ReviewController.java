@@ -30,9 +30,12 @@ public class ReviewController {
         return reviewService.findAllReview(page, size, order);
     }
     @GetMapping("/filter")
-    // forse è @GetMapping("/filter/shopId")
     public List<Review> filterReviewByShop(@RequestParam(name = "shopId") int id){
         return reviewService.filterByShop(id);
+    }
+    @GetMapping("/filterproduct")
+    public List<Review> filterReviewByProduct(@RequestParam(name = "productId") UUID id){
+        return reviewService.filterByProduct(id);
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
