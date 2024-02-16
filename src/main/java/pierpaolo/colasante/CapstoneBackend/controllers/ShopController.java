@@ -9,11 +9,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pierpaolo.colasante.CapstoneBackend.entities.Product;
 import pierpaolo.colasante.CapstoneBackend.entities.Shop;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
 import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
+import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ShopDTO;
 import pierpaolo.colasante.CapstoneBackend.services.ShopService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/shop")
@@ -25,6 +29,15 @@ public class ShopController {
                                @RequestParam(defaultValue = "10") int size,
                                @RequestParam(defaultValue = "shopId") String order){
         return shopService.findAllShop(page, size, order);
+    }
+    @GetMapping("/{shopId}")
+    public Shop getShop(@PathVariable int shopId){
+        return shopService.findById(shopId);
+    }
+    @GetMapping("/{shopId}/products")
+    public List<Product> getAllProductsByShopId(@PathVariable int shopId){
+        Shop shop = shopService.findById(shopId);
+        return shop.getProductList();
     }
     @PostMapping
     @PreAuthorize("hasAuthority('SELLER')")
