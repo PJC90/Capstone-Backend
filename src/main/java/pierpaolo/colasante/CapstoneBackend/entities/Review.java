@@ -5,16 +5,19 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
-@JsonIgnoreProperties({"shopReview", "productReview", "buyerReview", "orderReview"})
+@JsonIgnoreProperties({"shopReview", "productReview", "orderReview"})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewId;
     private int rating;
     private String photoReview;
+    private LocalDate dateReview;
     private String description;
     @ManyToOne
     @JoinColumn(name = "shop_id")

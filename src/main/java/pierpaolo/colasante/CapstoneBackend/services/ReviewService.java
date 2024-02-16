@@ -15,6 +15,7 @@ import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ReviewDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.ReviewDAO;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,6 +58,7 @@ public class ReviewService {
             Review newReview = new Review();
             newReview.setRating(body.rating());
             newReview.setPhotoReview("https://ui-avatars.com/api/?name=" + shop.getShopName());
+            newReview.setDateReview(LocalDate.now());
             newReview.setDescription(body.description());
             newReview.setShopReview(shop);
             newReview.setProductReview(product);
