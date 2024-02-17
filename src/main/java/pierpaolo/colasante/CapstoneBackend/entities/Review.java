@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@JsonIgnoreProperties({"shopReview", "productReview", "orderReview"})
+@JsonIgnoreProperties({"shopReview", "orderReview"})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,7 @@ public class Review {
     private Shop shopReview;
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnoreProperties({"shop","reviewProduct","carts","category","orders"})
     private Product productReview;
     @ManyToOne
     @JoinColumn(name = "user_buyer_id")
