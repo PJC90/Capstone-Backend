@@ -41,9 +41,7 @@ public class ShopService {
         UUID userId = user.getUserId();
         Shop newShop = new Shop();
         User foundSeller = userService.findById(userId);
-        if(foundSeller.getRole() != Roles.SELLER){
-            throw new IllegalStateException("Solo i SELLER posso creare nuovi negozi...");
-        }
+        foundSeller.setRole(Roles.SELLER);
         newShop.setShopName(body.shopName());
         newShop.setSeller(foundSeller);
         newShop.setLogoShop("https://ui-avatars.com/api/?name=" + body.shopName());

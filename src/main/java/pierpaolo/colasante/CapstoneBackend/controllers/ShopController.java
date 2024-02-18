@@ -40,9 +40,7 @@ public class ShopController {
         return shop.getProductList();
     }
     @PostMapping
-    @PreAuthorize("hasAuthority('SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
-    // diventi SELLER con put /users/seller senza passare niente nel body!
     public Shop saveNewShop(@AuthenticationPrincipal User user, @RequestBody @Validated ShopDTO payload, BindingResult validation){
         if(validation.hasErrors()){
             System.out.println(validation.getAllErrors());
