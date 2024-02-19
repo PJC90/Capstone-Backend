@@ -67,12 +67,10 @@ public class ShopService {
         if (!existingShop.getSeller().getUserId().equals(user.getUserId())) {
             throw new IllegalStateException("Non hai il permesso per modificare questo negozio...");
         }
-        if (body.shopName() != null) {
-            existingShop.setShopName(body.shopName());
-        }
-        existingShop.setDescription(body.description());
-        existingShop.setNation(body.nation());
-        existingShop.setLocality(body.locality());
+        if (body.shopName() != null) {existingShop.setShopName(body.shopName());}
+        if (body.description() != null) {existingShop.setDescription(body.description());}
+        if (body.nation() != null) {existingShop.setNation(body.nation());}
+        if (body.locality() != null) {existingShop.setLocality(body.locality());}
         return shopDAO.save(existingShop);
     }
     public void deleteShop(User user, int shopId){
