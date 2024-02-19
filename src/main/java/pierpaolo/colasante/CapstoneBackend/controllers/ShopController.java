@@ -15,6 +15,7 @@ import pierpaolo.colasante.CapstoneBackend.entities.User;
 import pierpaolo.colasante.CapstoneBackend.exceptions.BadRequestException;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ShopDTO;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ShopFullDTO;
 import pierpaolo.colasante.CapstoneBackend.services.ShopService;
 
 import java.util.List;
@@ -29,6 +30,10 @@ public class ShopController {
                                @RequestParam(defaultValue = "10") int size,
                                @RequestParam(defaultValue = "shopId") String order){
         return shopService.findAllShop(page, size, order);
+    }
+    @GetMapping("/myshop")
+    public List<Shop> getMyShop(@AuthenticationPrincipal User user){
+        return shopService.getShopByUserId(user.getUserId());
     }
     @GetMapping("/{shopId}")
     public Shop getShop(@PathVariable int shopId){
@@ -52,7 +57,7 @@ public class ShopController {
     @PutMapping("/{shopId}")
     @PreAuthorize("hasAuthority('SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Shop updateShop(@AuthenticationPrincipal User user, @PathVariable int shopId, @RequestBody ShopDTO payload){
+    public Shop updateShop(@AuthenticationPrincipal User user, @PathVariable int shopId, @RequestBody ShopFullDTO payload){
         return shopService.updateShop(user, shopId, payload);
     }
     @DeleteMapping("/{shopId}")

@@ -17,6 +17,9 @@ public class Shop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int shopId;
     private String shopName;
+    private String description;
+    private String nation;
+    private String locality;
     private String logoShop;
     private String coverImageShop;
     private int numberOfSales;
