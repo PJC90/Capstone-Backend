@@ -14,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@JsonIgnoreProperties({ "reviewProduct", "carts", "category", "orders"})
+@JsonIgnoreProperties({ "reviewProduct", "carts", "orders"})
 public class Product {
     @Id
     @GeneratedValue

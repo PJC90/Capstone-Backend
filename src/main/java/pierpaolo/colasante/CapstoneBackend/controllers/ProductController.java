@@ -45,7 +45,7 @@ public class ProductController {
     @PutMapping("/{productId}")
     @PreAuthorize("hasAuthority('SELLER')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product saveProduct(@PathVariable UUID productId, @RequestBody  ProductDTO payload){
+    public Product updateProduct(@PathVariable UUID productId, @RequestBody  ProductDTO payload){
             return productService.updateProduct(productId, payload);
     }
     @DeleteMapping("/{productId}")
