@@ -20,8 +20,12 @@ public class CartService {
     @Autowired
     private ProductService productService;
     public List<Cart> findAllCart(){return cartDAO.findAll();}
-    public List<Product> getAllProductInCart(UUID cartId){
-        Cart cart = cartDAO.findById(cartId).orElseThrow(()->new NotFoundException(cartId));
+    public List<Product> getAllProductInCart(UUID userId){
+        User found = userService.findById(userId);
+        Cart cart = found.getCart();
+        if(cart == null){
+            throw new NotFoundException("Carrello non presente per utente: " + userId );
+        }
         return cart.getProductListCart();
     }
     public Cart findById(UUID cartId){

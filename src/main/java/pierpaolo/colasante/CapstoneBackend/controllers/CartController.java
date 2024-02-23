@@ -21,9 +21,9 @@ public class CartController {
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<Cart> allCart(){return cartService.findAllCart();}
-    @GetMapping("/{cartId}")
-    public List<Product> allProductInCart(@PathVariable UUID cartId){
-        return cartService.getAllProductInCart(cartId);}
+    @GetMapping("/productInCart")
+    public List<Product> allProductInCart(@AuthenticationPrincipal User user){
+        return cartService.getAllProductInCart(user.getUserId());}
 
     @PostMapping("/{productId}/addproduct")
     @ResponseStatus(HttpStatus.CREATED)
