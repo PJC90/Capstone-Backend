@@ -3,9 +3,14 @@ package pierpaolo.colasante.CapstoneBackend.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pierpaolo.colasante.CapstoneBackend.entities.Category;
+import pierpaolo.colasante.CapstoneBackend.entities.Product;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.CategoryDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.CategoryDAO;
@@ -19,8 +24,9 @@ public class CategoryService {
     private CategoryDAO categoryDAO;
     @Autowired
     private Cloudinary cloudinary;
-    public List<Category> findAllCategory(){
-        return categoryDAO.findAll();
+    public Page<Category> findAllCategory(int page, int size, String order){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+        return categoryDAO.findAll(pageable);
     }
     public Category salvaCategoria(CategoryDTO body){
         Category newCategory = new Category();
@@ -45,5 +51,9 @@ public class CategoryService {
         found.setPhotoCategory(url);
         categoryDAO.save(found);
         return url;
+    }
+    public List<Product> getProductByCategory(int categoriaId){
+        Category foud = this.findById(categoriaId);
+        return foud.getProduct();
     }
 }
