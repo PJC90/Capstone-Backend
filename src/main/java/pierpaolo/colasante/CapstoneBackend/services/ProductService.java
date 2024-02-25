@@ -16,6 +16,7 @@ import pierpaolo.colasante.CapstoneBackend.repositories.ProductDAO;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,6 +36,10 @@ public class ProductService {
     public Product findById(UUID productId){
         return productDAO.findById(productId).
                 orElseThrow(()->new NotFoundException(productId));}
+
+    public List<Product> findByTitleStartWith(String title){
+        return productDAO.findByTitleStartingWith(title);
+    }
     public Product saveProduct(ProductDTO body){
         Product newProduct = new Product();
         Shop shop = shopService.findById(body.shop_id());

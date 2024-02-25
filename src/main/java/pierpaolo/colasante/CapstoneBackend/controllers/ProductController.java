@@ -14,6 +14,7 @@ import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ProductDTO;
 import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ProductResponseDTO;
 import pierpaolo.colasante.CapstoneBackend.services.ProductService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -31,6 +32,11 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public Product findProduct(@PathVariable UUID productId){
         return productService.findById(productId);
+    }
+    @GetMapping("/startWith")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> findProductStartWith(@RequestParam("title") String title){
+        return productService.findByTitleStartWith(title);
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
