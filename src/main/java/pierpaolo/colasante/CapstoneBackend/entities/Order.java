@@ -22,7 +22,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private StatusOrder statusOrder;
     private LocalDateTime orderDate;
-    @OneToOne(mappedBy = "order")
+    @OneToOne
+    @JoinColumn(name = "payment_id")
     private Payment payment;
     @OneToMany(mappedBy = "orderReview")
     private List<Review> review;

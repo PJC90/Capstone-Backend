@@ -66,4 +66,14 @@ public class CartService {
             return existingCart;
         }
     }
+    public Cart removeAllProductFromCart(UUID userId){
+        User user = userService.findById(userId);
+        Cart existingCart = cartDAO.findByUser(user);
+        if(existingCart == null){
+            // Se il carrello non esiste, non c'è nulla da rimuovere, quindi possiamo restituire il carrello esistente
+            return existingCart;
+        }
+        existingCart.getProductListCart().clear(); // Svuota la lista dei prodotti nel carrello
+        return cartDAO.save(existingCart);
+    }
 }

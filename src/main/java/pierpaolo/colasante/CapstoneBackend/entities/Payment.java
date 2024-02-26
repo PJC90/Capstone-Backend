@@ -14,9 +14,9 @@ public class Payment {
     @Id
     @GeneratedValue
     private UUID paymentId;
-    @OneToOne
-    @JoinColumn(name = "order_id")
+    @OneToOne(mappedBy = "payment")
     private Order order;
     private String transactionCode;
+    @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 }

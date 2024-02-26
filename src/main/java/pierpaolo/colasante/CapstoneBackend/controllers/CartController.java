@@ -43,4 +43,9 @@ public class CartController {
     public Cart removeProductFromCart(@AuthenticationPrincipal User user, @PathVariable UUID productId){
     return cartService.removeProductFromCart(user.getUserId(), productId);
     }
+    @DeleteMapping("/removeAll")
+    @ResponseStatus(HttpStatus.OK)
+    public Cart removeAllProduct(@AuthenticationPrincipal User user){
+        return cartService.removeAllProductFromCart(user.getUserId());
+    }
 }

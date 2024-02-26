@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface ProductDAO extends JpaRepository<Product, UUID> {
-        @Query("SELECT p FROM Product p WHERE LOWER(p.title) LIKE LOWER(CONCAT(:title, '%'))")
+        @Query("SELECT p FROM Product p WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :title, '%'))")
         List<Product> findByTitleStartingWith(@Param("title") String title);
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import pierpaolo.colasante.CapstoneBackend.entities.Payment;
 import pierpaolo.colasante.CapstoneBackend.entities.Review;
 import pierpaolo.colasante.CapstoneBackend.exceptions.NotFoundException;
+import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.PaymentDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.PaymentDAO;
 
 import java.util.UUID;
@@ -23,5 +24,12 @@ public class PaymentService {
     }
     public Payment findById(UUID paymentId){
         return paymentDAO.findById(paymentId).
-                orElseThrow(()->new NotFoundException(paymentId));}
+                orElseThrow(()->new NotFoundException(paymentId));
+    }
+    public Payment savePayment(PaymentDTO body){
+        Payment payment = new Payment();
+        payment.setTransactionCode(body.transactionCode());
+        payment.setPaymentType(body.paymentType());
+        return paymentDAO.save(payment);
+    }
 }
