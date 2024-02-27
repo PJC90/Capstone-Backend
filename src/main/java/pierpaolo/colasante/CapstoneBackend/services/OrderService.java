@@ -33,6 +33,9 @@ public class OrderService {
     public Order findById(UUID orderId){
         return orderDAO.findById(orderId).
                 orElseThrow(()->new NotFoundException(orderId));}
+    public List<Order> findAllOrderByUser(UUID userId){
+        return orderDAO.findByUserId(userId);
+    }
     @Transactional
     public Order saveOrder(UUID userId, UUID paymentId){
         User user = userService.findById(userId);

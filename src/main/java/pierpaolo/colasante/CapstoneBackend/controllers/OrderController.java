@@ -10,6 +10,7 @@ import pierpaolo.colasante.CapstoneBackend.entities.Order;
 import pierpaolo.colasante.CapstoneBackend.entities.User;
 import pierpaolo.colasante.CapstoneBackend.services.OrderService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -23,6 +24,14 @@ public class OrderController {
                                    @RequestParam(defaultValue = "10") int size,
                                    @RequestParam(defaultValue = "orderId") String order){
         return orderService.findAllOrder(page, size, order);
+    }
+    @GetMapping("/{orderId}")
+    public Order getMyActualOrder(@PathVariable UUID orderId){
+        return orderService.findById(orderId);
+    }
+    @GetMapping("/me")
+    public List<Order> getMyAllOrder(@AuthenticationPrincipal User user){
+        return orderService.findAllOrderByUser(user.getUserId());
     }
     @PostMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.CREATED)
