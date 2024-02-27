@@ -24,6 +24,8 @@ public class OrderService {
     private CartService cartService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PaymentService paymentService;
     public Page<Order> findAllOrder(int size, int page, String order){
         Pageable pageable= PageRequest.of(size, page, Sort.by(order));
         return orderDAO.findAll(pageable);
@@ -32,14 +34,16 @@ public class OrderService {
         return orderDAO.findById(orderId).
                 orElseThrow(()->new NotFoundException(orderId));}
     @Transactional
-    public Order saveOrder(UUID userId){
+    public Order saveOrder(UUID userId, UUID paymentId){
         User user = userService.findById(userId);
         Cart cart = cartService.findById(user.getCart().getCartId());
+        Payment payment = paymentService.findById(paymentId);
         Order newOrder = new Order();
         newOrder.setUserId(user);
         newOrder.setCart(cart);
         newOrder.setOrderDate(LocalDateTime.now());
-        newOrder.setStatusOrder(StatusOrder.IN_PROGRESS);
+        newOrder.setStatusOrder(StatusOrder.DELIVERED);
+        newOrder.setPayment(payment);
         // Spostamento dei prodotti dal carrello all'ordine
         List<Product> productsInCart = cart.getProductListCart();
         for(Product product : productsInCart) {

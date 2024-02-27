@@ -24,10 +24,10 @@ public class OrderController {
                                    @RequestParam(defaultValue = "orderId") String order){
         return orderService.findAllOrder(page, size, order);
     }
-    @PostMapping
+    @PostMapping("/{paymentId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Order saveOrder(@AuthenticationPrincipal User user){
-            return orderService.saveOrder(user.getUserId());
+    public Order saveOrder(@AuthenticationPrincipal User user,@PathVariable UUID paymentId){
+            return orderService.saveOrder(user.getUserId(), paymentId);
     }
 
 }
