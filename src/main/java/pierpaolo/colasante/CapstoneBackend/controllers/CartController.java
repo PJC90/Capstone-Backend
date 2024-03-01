@@ -21,9 +21,9 @@ public class CartController {
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<Cart> allCart(){return cartService.findAllCart();}
-    @GetMapping("/{cartId}")
-    public List<Product> allProductInCart(@PathVariable UUID cartId){
-        return cartService.getAllProductInCart(cartId);}
+    @GetMapping("/productInCart")
+    public List<Product> allProductInCart(@AuthenticationPrincipal User user){
+        return cartService.getAllProductInCart(user.getUserId());}
 
     @PostMapping("/{productId}/addproduct")
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,5 +42,10 @@ public class CartController {
     @ResponseStatus(HttpStatus.OK)
     public Cart removeProductFromCart(@AuthenticationPrincipal User user, @PathVariable UUID productId){
     return cartService.removeProductFromCart(user.getUserId(), productId);
+    }
+    @DeleteMapping("/removeAll")
+    @ResponseStatus(HttpStatus.OK)
+    public Cart removeAllProduct(@AuthenticationPrincipal User user){
+        return cartService.removeAllProductFromCart(user.getUserId());
     }
 }

@@ -1,5 +1,6 @@
 package pierpaolo.colasante.CapstoneBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +11,15 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties({"productList", "reviewList"})
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int shopId;
     private String shopName;
+    private String description;
+    private String nation;
+    private String locality;
     private String logoShop;
     private String coverImageShop;
     private int numberOfSales;

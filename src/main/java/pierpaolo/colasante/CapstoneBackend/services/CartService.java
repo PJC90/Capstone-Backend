@@ -20,8 +20,12 @@ public class CartService {
     @Autowired
     private ProductService productService;
     public List<Cart> findAllCart(){return cartDAO.findAll();}
-    public List<Product> getAllProductInCart(UUID cartId){
-        Cart cart = cartDAO.findById(cartId).orElseThrow(()->new NotFoundException(cartId));
+    public List<Product> getAllProductInCart(UUID userId){
+        User found = userService.findById(userId);
+        Cart cart = found.getCart();
+        if(cart == null){
+            throw new NotFoundException("Carrello non presente per utente: " + userId );
+        }
         return cart.getProductListCart();
     }
     public Cart findById(UUID cartId){
@@ -61,5 +65,15 @@ public class CartService {
             // Se il prodotto non è stato trovato, restituisci semplicemente il carrello esistente senza alcuna modifica
             return existingCart;
         }
+    }
+    public Cart removeAllProductFromCart(UUID userId){
+        User user = userService.findById(userId);
+        Cart existingCart = cartDAO.findByUser(user);
+        if(existingCart == null){
+            // Se il carrello non esiste, non c'è nulla da rimuovere, quindi possiamo restituire il carrello esistente
+            return existingCart;
+        }
+        existingCart.getProductListCart().clear(); // Svuota la lista dei prodotti nel carrello
+        return cartDAO.save(existingCart);
     }
 }

@@ -48,9 +48,9 @@ public class UserController {
     public void deleteUser(@AuthenticationPrincipal User user){
         userService.userDelete(user.getUserId());
     }
-    @PatchMapping("/{userId}/upload")
+    @PatchMapping("/me/upload")
     @ResponseStatus(HttpStatus.CREATED)
-    public String uploadImage(@RequestParam("image")MultipartFile file, @PathVariable UUID userId) throws Exception {
-        return userService.uploadImage(file, userId);
+    public String uploadImage(@RequestParam("image")MultipartFile file, @AuthenticationPrincipal User user) throws Exception {
+        return userService.uploadImage(file, user.getUserId());
     }
 }

@@ -38,6 +38,7 @@ public class UserService {
         if(body.name() != null){update.setName(body.name());}
         if(body.surname() != null){update.setSurname(body.surname());}
         if(body.birthday() != null){update.setBirthday(body.birthday());}
+//        qui non posso modificare la password entrerebbe in un loop
         if(body.username() != null){update.setUsername(body.username());}
         if(body.email() != null){update.setEmail(body.email());}
         return userDAO.save(update);

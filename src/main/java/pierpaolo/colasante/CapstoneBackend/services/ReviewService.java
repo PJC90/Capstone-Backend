@@ -15,7 +15,9 @@ import pierpaolo.colasante.CapstoneBackend.payloads.entitiesDTO.ReviewDTO;
 import pierpaolo.colasante.CapstoneBackend.repositories.ReviewDAO;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -57,6 +59,7 @@ public class ReviewService {
             Review newReview = new Review();
             newReview.setRating(body.rating());
             newReview.setPhotoReview("https://ui-avatars.com/api/?name=" + shop.getShopName());
+            newReview.setDateReview(LocalDate.now());
             newReview.setDescription(body.description());
             newReview.setShopReview(shop);
             newReview.setProductReview(product);
@@ -64,9 +67,30 @@ public class ReviewService {
             newReview.setOrderReview(order);
             return reviewDAO.save(newReview);
     }
+    public Review findReviewIfOrderedProductExists(UUID userId, UUID productId, int shopId, UUID orderId) {
+        Shop shop = shopService.findById(shopId);
+        Product product = productService.findById(productId);
+        User user = userService.findById(userId);
+        // Controlla se l'utente ha effettuato un ordine per questo prodotto in questo negozio
+        boolean isOrdered = orderService.isUserOrderedProductInShop(user, product, shop);
+        if (!isOrdered) {
+            throw new IllegalStateException("L'utente non ha effettuato un ordine per questo prodotto in questo negozio");
+        }
+        // Filtra le recensioni in base all'ID del prodotto
+        List<Review> reviews = reviewDAO.filterByProduct(productId);
+
+        // Trova la recensione corrispondente all'utente nell'elenco filtrato
+        Optional<Review> existingReview = reviews.stream()
+                .filter(review -> review.getBuyerReview().equals(user))
+                .filter(review -> review.getOrderReview().getOrderId().equals(orderId)) // Aggiunto controllo sull'ID dell'ordine
+                .findFirst();
+
+        return existingReview.orElse(null);
+    }
     public List<Review> filterByShop(int id){
         return reviewDAO.filterByShop(id);
     }
+    public List<Review> filterByProduct(UUID id){return reviewDAO.filterByProduct(id);}
     public String uploadPhotoReview(MultipartFile file, int reviewId) throws IOException {
         Review found = this.findById(reviewId);
         String url = (String)cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
