@@ -37,6 +37,17 @@ public class ReviewController {
     public List<Review> filterReviewByProduct(@RequestParam(name = "productId") UUID id){
         return reviewService.filterByProduct(id);
     }
+    @GetMapping("/filterReview")
+    public Review filterReviewProductBuy(@AuthenticationPrincipal User user,
+                                         @RequestParam(name = "productId") UUID productId,
+                                         @RequestParam(name = "shopId") int shopId,
+                                         @RequestParam(name = "orderId") UUID orderId){
+        return reviewService.findReviewIfOrderedProductExists(user.getUserId(), productId, shopId, orderId );
+    }
+    @GetMapping("/{reviewId}")
+    public Review getReviewById(@PathVariable int reviewId){
+        return reviewService.findById(reviewId);
+    }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Review saveReview(@AuthenticationPrincipal User user, @RequestBody @Validated ReviewDTO payload, BindingResult validation){
