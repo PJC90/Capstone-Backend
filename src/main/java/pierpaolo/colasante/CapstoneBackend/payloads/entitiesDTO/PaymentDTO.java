@@ -7,6 +7,8 @@ import pierpaolo.colasante.CapstoneBackend.entities.enums.PaymentType;
 public record PaymentDTO(
         @NotEmpty(message = "Il Codice del Pagamento è obbligatorio")
         String transactionCode,
+        @NotNull(message = "Il totale dell'ordine è un campo obbligatorio!")
+        double total,
         @NotNull(message = "Il tipo di pagamento è un campo obbligatorio (STRIPE o PAYPAL)")
         PaymentType paymentType
 ) {

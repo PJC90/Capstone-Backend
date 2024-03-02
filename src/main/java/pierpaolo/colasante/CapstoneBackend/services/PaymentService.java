@@ -29,6 +29,7 @@ public class PaymentService {
     public Payment savePayment(PaymentDTO body){
         Payment payment = new Payment();
         payment.setTransactionCode(body.transactionCode());
+        payment.setTotal(body.total());
         payment.setPaymentType(body.paymentType());
         return paymentDAO.save(payment);
     }

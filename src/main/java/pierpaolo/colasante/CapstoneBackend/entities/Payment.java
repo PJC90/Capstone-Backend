@@ -21,4 +21,5 @@ public class Payment {
     private String transactionCode;
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
+    private double total;
 }
