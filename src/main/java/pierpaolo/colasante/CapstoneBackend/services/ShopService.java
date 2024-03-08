@@ -58,8 +58,8 @@ public class ShopService {
         foundSeller.setRole(Roles.SELLER);
         newShop.setShopName(body.shopName());
         newShop.setSeller(foundSeller);
-        newShop.setLogoShop("https://ui-avatars.com/api/?name=" + body.shopName());
-        newShop.setCoverImageShop("https://ui-avatars.com/api/?name=" + body.shopName());
+        newShop.setLogoShop("https://ui-avatars.com/api/?name=" + body.shopName() + "&length=9&font-size=0.15" + "&background=e4ba8e&color=fff");
+        newShop.setCoverImageShop("https://ui-avatars.com/api/?name=shop&length=4&font-size=0.1" + "&background=e4ba8e&color=fff");
         return shopDAO.save(newShop);
     }
     public Shop updateShop(User user, int shopId, ShopFullDTO body){
