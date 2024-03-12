@@ -58,7 +58,7 @@ public class ReviewService {
         }
             Review newReview = new Review();
             newReview.setRating(body.rating());
-            newReview.setPhotoReview("https://ui-avatars.com/api/?name=" + shop.getShopName());
+            newReview.setPhotoReview("https://ui-avatars.com/api/?name=" + user.getName() + "&length=1" + "&background=random&color=random");
             newReview.setDateReview(LocalDate.now());
             newReview.setDescription(body.description());
             newReview.setShopReview(shop);
